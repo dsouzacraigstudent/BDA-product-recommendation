@@ -1,0 +1,92 @@
+/* Custom styles for the recommendation dashboard */
+
+.card {
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    border: 1px solid #e5e7eb;
+}
+
+.graph-container {
+    min-height: 450px;
+    background-color: #f9fafb;
+    border-radius: 0.5rem;
+    border: 1px solid #e5e7eb;
+}
+
+.tooltip {
+    position: absolute;
+    pointer-events: none;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    z-index: 1000;
+    opacity: 0;
+}
+
+.axis-label {
+    font-size: 10px;
+    fill: #6b7280;
+}
+
+.d3-chart {
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+    border: 1px solid #e5e7eb;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.chart-title {
+    font-weight: bold;
+    color: #374151;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.highlight-recommendation {
+    border-left: 4px solid #6366f1;
+    animation: highlight 0.5s ease-in-out;
+}
+
+@keyframes highlight {
+    0% { border-left-color: transparent; }
+    50% { border-left-color: #6366f1; }
+    100% { border-left-color: #6366f1; }
+}
+
+.log-item {
+    margin-bottom: 4px;
+    line-height: 1.4;
+}
+
+.link-label {
+    font-size: 10px;
+    fill: #6b7280;
+    pointer-events: none;
+}
+
+/* Pulse animation for notifications */
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced E-Commerce Recommendation Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="text-gray-800 p-4 sm:p-6 md:p-8">
+
+    <div class="max-w-screen-2xl mx-auto">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900">Advanced Recommendation Dashboard</h1>
+            <p class="mt-2 text-lg text-gray-600">Featuring FP-Growth Analysis, Advanced Metrics, and Live Simulation</p>
+        </header>
+        
+        <div class="card p-4 mb-8 flex flex-col sm:flex-row justify-center items-center gap-4">
+             <button id="start-simulation-btn" class="w-full sm:w-auto bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-indigo-300">
+                ▶️ Start Simulation
+            </button>
+            <button id="pause-simulation-btn" class="hidden w-full sm:w-auto bg-yellow-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-yellow-600 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-yellow-300 ml-2">
+                ⏸️ Pause
+            </button>
+            <div class="flex items-center gap-2">
+                <label for="speed-slider" class="text-sm font-medium">Speed:</label>
+                <input type="range" id="speed-slider" min="200" max="2000" value="1000" class="w-32">
+            </div>
+        </div>
+
+        <main class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+            
+            <section class="lg:col-span-1 space-y-6">
+                <h2 class="text-2xl font-bold text-center mb-4">User Activity</h2>
+                <div id="users-container" class="space-y-4 h-[500px] overflow-y-auto pr-2"></div>
+            </section>
+            
+            <section class="lg:col-span-3 space-y-6">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-2xl font-bold">Product Association Graph</h2>
+                        <div class="flex items-center gap-2">
+                            <input type="text" id="product-search" placeholder="🔍 Search products..." class="px-3 py-2 border rounded-lg text-sm w-48 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <button id="export-rules-btn" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm">📊 Export Rules</button>
+                        </div>
+                    </div>
+                    <div id="graph-container" class="card graph-container h-96"></div>
+                    <div class="tooltip"></div>
+                </div>
+                 <div>
+                    <h2 class="text-2xl font-bold text-center my-4">Analysis & Findings</h2>
+                    <div id="analysis-container" class="card p-6 min-h-[300px]">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h3 class="font-bold text-lg mb-2">Methodology</h3>
+                                <p class="text-sm text-gray-600 mb-4">This simulation employs the **FP-Growth algorithm** to mine frequent itemsets from user purchase data. Unlike simpler methods, FP-Growth avoids costly candidate generation, offering a highly efficient way to discover product associations. Rules are generated from these itemsets and evaluated using Support, Confidence, and Lift metrics to ensure relevance and strength.</p>
+                                <h3 class="font-bold text-lg mb-2">Discovered Association Rules</h3>
+                                <div id="rules-table" class="max-h-[400px] overflow-y-auto border rounded-lg">
+                                    <p class="text-gray-500 text-center italic p-4">Run simulation to generate rules...</p>
+                                </div>
+                            </div>
+                            <div class="space-y-4">
+                               <div id="category-chart-container" class="d3-chart"></div>
+                               <div id="lift-chart-container" class="d3-chart"></div>
+                               <div id="scatter-plot-container" class="d3-chart"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="lg:col-span-1 space-y-6">
+                 <div>
+                    <h2 class="text-2xl font-bold text-center mb-4">Live Metrics</h2>
+                    <div class="card p-6 space-y-4">
+                         <div class="text-center">
+                            <p class="text-sm text-gray-500">Total Events</p>
+                            <p id="metric-events" class="text-3xl font-bold text-indigo-600">0</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-sm text-gray-500">Total Purchases</p>
+                            <p id="metric-purchases" class="text-3xl font-bold text-indigo-600">0</p>
+                        </div>
+                         <div class="text-center">
+                            <p class="text-sm text-gray-500">Strong Associations</p>
+                            <p id="metric-associations" class="text-3xl font-bold text-indigo-600">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-2xl font-bold">Triggered Recommendations</h2>
+                        <span id="rec-count" class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-bold">0</span>
+                    </div>
+                    <div id="recommendations-container" class="space-y-4 max-h-[450px] overflow-y-auto pr-2">
+                         <div class="card p-4 text-center text-gray-500">Personalized recommendations will appear here.</div>
+                    </div>
+                </div>
+                <div>
+                     <h2 class="text-2xl font-bold text-center mb-4">Live Event Log</h2>
+                     <div id="log-container" class="card p-4 h-48 bg-gray-900 dark:bg-gray-800 text-white font-mono text-xs rounded-lg overflow-y-auto">
+                        <p class="text-gray-400">System events will be logged here...</p>
+                     </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script type="module" src="data.js"></script>
+    <script type="module" src="script.js"></script>
+</body>
+</html>
+
